@@ -1,0 +1,5 @@
+Welcome to HuBase
+
+I create this database for learning/fun. I have been thinking and preparing to implement a database for some time. While writing HuBase, I have two references: the book Database System Implementation and the source code of SQLite3. So, HuBase will have the architecture like SQLite3.
+Also, the database can only run on UNIX (use POSIX & standard I/O only), so that I can get rid of the multi-platform problems :-)).  
+TODO: add more introductions for each module later.
