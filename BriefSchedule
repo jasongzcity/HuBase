@@ -1,4 +1,7 @@
 This file is records a brief schedule of the project and some ramdom thoughts during my reading & coding.
 
 2017-02-06 
-I have finished reading chapter 1-5 of book Database System Implementation and the OS-layer code of SQLite3. I was about to implement HuBase's OS-layer first. However,the OS-layer has to cooperate with the "pager"(so-called in SQLite) closely and I am not familiar with that part. So I will first write down the interfaces of OS-layer and implement later.
+I have finished reading chapter 1-5 of book Database System Implementation and the OS-layer code of SQLite3. 
+I was about to implement HuBase's OS-layer first. 
+However,the OS-layer has to cooperate with the "pager"(so-called in SQLite) closely and I am not familiar 
+with that part. So I will first write down the interfaces of OS-layer and implement later.
