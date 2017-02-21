@@ -15,6 +15,7 @@
 #define _HUBASE_H_
 
 #include <sys/type.h>
+
 /**
  *
  * Naming: usually start with "huBase_"
@@ -38,15 +39,17 @@ typedef __int16_t h_i16;
 typedef __int32_t h_i32;
 typedef __int64_t h_i64;
 
+typedef struct huBase_io_methods huBase_io_methods;
+typedef struct huBase_file huBase_file;
+
 /**
  *
  * IO_method "sets".
  * The abstraction of io methods.
  *
- * So that different files can use different method "strategies".
- *
+ * Different files can use different method "strategies".
  **/
-typedef struct huBase_io_methods {
+struct huBase_io_methods {
     int (*xClose)( huBase_file* file );                                             /* Close the file */
     int (*xRead)( huBase_file* file, void* buff, int amount, h_i64 offset );        /* Read the file */
     int (*xWrite)( huBase_file* file, const void* buff, int amount, h_i64 offset ); /* Write buff */
@@ -56,11 +59,12 @@ typedef struct huBase_io_methods {
     int (*xUnlock)( huBase_file* file, int flag );
     int (*xFileSize)( huBase_file* file, h_i64* size );                             /* get the file size */
     int (*xFileControl)( huBase_file* file, int opcode, void* pArg );               /* file control */
-} huBase_io_methods;
+};
 
-typedef struct huBase_file {
-    const huBase_io_methods* pMethods;   //The detailed implementation leaves to subclasses.
-} huBase_file;
+/* File abstraction */
+struct huBase_file {
+    const huBase_io_methods* pMethods;   
+};
 
 #endif /* _HUBASE_H_*/
 
