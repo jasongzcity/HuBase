@@ -19,7 +19,7 @@
 /* This database cannot run on Windows. */
 #if defined(_WIN32) || defined(_WIN64)
  #error "HuBase cannot run on windows"
-#endif 
+#endif
 
 /**
  *

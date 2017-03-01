@@ -6,8 +6,8 @@
  * Define interfaces for pager layer
  **/
 
-#ifndef _PAGER_H_
-#define _PAGER_H_
+#ifndef _HUBASE_PAGER_H_
+#define _HUBASE_PAGER_H_
 
 #include "./HuBaseInt.h"
 
@@ -31,4 +31,4 @@ int getPage(Pager*, u32, Page**);
 int releasePage(Pager*, Page*);
 int getPageData(Page*, void**);
 
-#endif /* _PAGER_H_ */
+#endif /* _HUBASE_PAGER_H_ */
