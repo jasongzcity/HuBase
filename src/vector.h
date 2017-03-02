@@ -19,6 +19,9 @@ int releaseVector(h_vector*); /* free a vector */
 int insertElemAt(h_vector*,u64 rank,void* elem);
 int insertElem(h_vector*,void* elem);
 int removeElem(h_vector*,u64 rank,void* elem);
-int getElem(h_vector*,u64 rank,void* elem);
+int getElem(h_vector*,u64 rank,void** elem);
+
+u64 vectorSize(h_vector* vec);
+u64 vectorCap(h_vector* vec);
 #endif /* _HUBASE_VECTOR_H_ */
 

@@ -5,6 +5,7 @@
  * Author:lwz
  * Since: 2017-02-28 
  **/
+
 #include "./HuBaseInt.h"
 
 /** 
@@ -52,10 +53,19 @@ int arrayCopy(void* src,u64 src_off,void* tar,u64 tar_off,u64 len,int cflag)
 int slideInArray(void* arr,u64 begin,u64 len,i64 offset)
 {
     int cflag;
+    u64 tar = 0;
+    u64 t_offset;
     if(offset>-1)
+    {
         cflag = 2;    /* copy from the end to the beginning */
+        tar = begin+offset;
+    }
     else
+    {
+        t_offset = (u64)(-offset);
+        tar = begin - t_offset;
         cflag = 1;
-    arrayCopy(arr,begin,arr,begin+offset,len,cflag);  /* be awared of the overflow problem */
+    }
+    arrayCopy(arr,begin,arr,tar,len,cflag);
     return HUBASE_OK;
 }

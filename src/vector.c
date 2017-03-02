@@ -22,12 +22,12 @@ struct h_vector {
 static int checkExpand(h_vector* vec)
 {
     void* temp;
-    if((vec->size+1)/vec->capacity > vec->exp_pt)
+    if((float)(vec->size+1)/vec->capacity > vec->exp_pt)
     {
-        temp = huBaseMallocRaw(vec->capacity<<1);
+        temp = huBaseMallocRaw((vec->capacity<<1)*vec->elemSize);
         if(!temp) return HUBASE_OUTOFMEMORY;
-        arrayCopy(vec->pBuff,0,temp,0,vec->size*vec->elemSize,1);
-        huBaseFreeRaw(vec->pBuff);
+        arrayCopy(vec->pBuff,0,temp,0,(vec->size)*(vec->elemSize),1); 
+        huBaseFreeRaw((void*)vec->pBuff);
         vec->pBuff = (char*)temp;
         vec->capacity <<= 1;
     }
@@ -37,12 +37,12 @@ static int checkExpand(h_vector* vec)
 static int checkShrink(h_vector* vec)
 {
     void* temp;
-    if((vec->size-1)/vec->capacity < vec->shr_pt)
+    if((float)(vec->size-1)/vec->capacity < vec->shr_pt)
     {
-        temp = huBaseMallocRaw(vec->capacity>>1);
+        temp = huBaseMallocRaw((vec->capacity>>1)*vec->elemSize);
         if(!temp) return HUBASE_OUTOFMEMORY;
         arrayCopy(vec->pBuff,0,temp,0,vec->size*vec->elemSize,1);
-        huBaseFreeRaw(vec->pBuff);
+        huBaseFreeRaw((void*)vec->pBuff);
         vec->pBuff = (char*)temp;
         vec->capacity >>= 1;
     }
@@ -96,7 +96,9 @@ int releaseVector(h_vector* vec)
  **/
 int insertElemAt(h_vector* vec,u64 rank,void* elem)
 {
-    int rs = checkExpand(vec);
+    int rs;
+    assert(rank <= vec->size+1);
+    rs = checkExpand(vec);
     if(rs == HUBASE_OUTOFMEMORY)
         return rs;
     if(rank<=vec->size)     /* need to slide in these circumstances */
@@ -112,13 +114,37 @@ int insertElem(h_vector* vec,void* elem)
     return insertElemAt(vec,vec->size+1,elem);
 }
 
+/* Caller of this method should prepare the space for the pointer elem */
 int removeElem(h_vector* vec,u64 rank,void* elem)
 {
-    return 0;
+    int rs = 0;
+    i64 offset = -(i64)(vec->elemSize);
+    assert(rank<=vec->size);
+    rs = checkShrink(vec);
+    if(rs==HUBASE_OUTOFMEMORY) return rs;
+    arrayCopy(vec->pBuff,(rank-1)*vec->elemSize,elem,0,vec->elemSize,1);
+    if(rank<vec->size) /* need to slide */
+        slideInArray(vec->pBuff,rank*vec->elemSize,(vec->size-rank)*vec->elemSize,offset);
+    vec->size--;
+    return HUBASE_OK;
 }
 
-int getElem(h_vector* vec,u64 rank,void* elem)
+int getElem(h_vector* vec,u64 rank,void** ppElem)
 {
-    return 0;
+    assert(rank<=vec->size);
+    *ppElem = (void*)(vec->pBuff+(rank-1)*vec->elemSize);
+    return HUBASE_OK;
+}
+
+u64 vectorSize(h_vector* vec)
+{
+    assert(vec);
+    return vec->size;
+}
+
+u64 vectorCap(h_vector* vec)
+{
+    assert(vec);
+    return vec->capacity;
 }
 
