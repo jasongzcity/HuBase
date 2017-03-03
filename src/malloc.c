@@ -15,6 +15,7 @@
 
 #include <stdlib.h>
 #include "./HuBaseInt.h"
+#include <assert.h>
 
 /* stats for memory management */
 typedef struct memStat { 
@@ -48,4 +49,23 @@ void* huBaseMallocRaw(u64 nBytes)
 void huBaseFreeRaw(void* p)
 {
     free(p);
+}
+
+/**
+ * allocate memory of nBytes. 
+ * return by pp.
+ **/
+int huBaseMalloc(u64 nBytes,void** pp)
+{
+    assert(pp);
+    *pp = malloc(memRoundUp(nBytes));
+    if((*pp)==0) return HUBASE_OUTOFMEMORY;
+    else return HUBASE_OK;
+}
+
+int huBaseFree(void* p)
+{
+    assert(p);
+    free(p);
+    return HUBASE_OK;
 }
