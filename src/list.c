@@ -82,7 +82,7 @@ h_listNode* nodeAt(h_list* list, u64 rank)
 {
     h_listNode* temp;
     assert(list&&list->size);
-    assert(rank<=list->size);
+    assert(rank<=list->size&&rank>0);
     temp = list->pHeader;
     while(rank)
     {
@@ -96,4 +96,47 @@ u64 listSize(h_list* list)
 {
     assert(list);
     return list->size;
+}
+
+void removeNodeAt(h_list* list,u64 rank,h_listNode** ppNode)
+{
+    assert(ppNode);
+    h_listNode* rs = nodeAt(list,rank);
+    rs->pNext->pPrev = rs->pPrev;
+    rs->pPrev->pNext = rs->pNext;
+    list->size--;
+    *ppNode = rs;
+}
+
+void insertNodeAt(h_list* list,u64 rank,h_listNode* pNode)
+{
+    assert(list && rank>0 && rank<=list->size+1);
+    assert(pNode);
+    h_listNode* temp = list->pHeader;
+    while(rank)
+    {
+        temp = temp->pNext;
+        rank--;
+    }
+    temp->pPrev->pNext = pNode;
+    pNode->pPrev = temp->pPrev;
+    pNode->pNext = temp;
+    temp->pPrev = pNode;
+    list->size++;
+}
+
+/**
+ * Fast route method. 
+ * The insertNodeAt routine will iterate the list from the beginning,
+ * in the case of the a list, this will slow down the insert movement.
+ * So this method use the pTrailer to insert node at the size+1 position.
+ **/
+void insertNodeAtLast(h_list* list,h_listNode* pNode)
+{
+    h_listNode* temp = list->pTrailer;
+    temp->pPrev->pNext = pNode;
+    pNode->pPrev = temp->pPrev;
+    pNode->pNext = temp;
+    temp->pPrev = pNode;
+    list->size++;
 }

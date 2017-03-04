@@ -7,8 +7,8 @@
  * Since: 2017-03-03
  **/
 
-#ifndef _HUBASE_LISH_H_
-#define _HUBASE_LISH_H_
+#ifndef _HUBASE_LIST_H_
+#define _HUBASE_LIST_H_
 
 #include "./HuBaseInt.h"
 
@@ -26,4 +26,13 @@ h_listNode* nodeAt(h_list* list, u64 rank);
 
 u64 listSize(h_list* list);
 
-#endif /* _HUBASE_LISH_H_ */
+/* Insert the given node at given position. Note: the position should range from 1 to size+1 */
+void insertNodeAt(h_list* list,u64 position,h_listNode* pNode);
+void insertNodeAtLast(h_list* list,h_listNode* pNode);
+
+/** 
+ * Remove node at the given position, and return the node in pointer. Note: the position should
+ * range from 1 to size. 
+ **/
+void removeNodeAt(h_list* list,u64 position,h_listNode** ppNode);
+#endif /* _HUBASE_LIST_H_ */

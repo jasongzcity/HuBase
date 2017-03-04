@@ -23,5 +23,5 @@ int getElem(h_vector*,u64 rank,void** elem);
 
 u64 vectorSize(h_vector* vec);
 u64 vectorCap(h_vector* vec);
-#endif /* _HUBASE_VECTOR_H_ */
 
+#endif /* _HUBASE_VECTOR_H_ */
