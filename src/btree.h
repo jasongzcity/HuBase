@@ -23,11 +23,12 @@ u32 nodesInTheTree(bTree* pTree);
 u16 heightOfTree(bTree* pTree);
 int initFromBuff(void* buff);
 int dumpIntoBuff(void* buff);
+int releaseTree(bTree* pTree);
 
-//#ifdef HUBASE_DEBUG
+#ifdef HUBASE_DEBUG
 void testListInsert(bTree* pTree,int* pInt,int num);
 void testListRemove(bTree* pTree,int num);
 void displayList(bTree* testTree);
-//#endif
+#endif
 
 #endif /* _HUBASE_BTREE_H_ */ 

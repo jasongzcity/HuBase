@@ -13,9 +13,9 @@
 #include "./malloc.h"
 #include <assert.h>
 
-//#ifdef HUBASE_DEBUG
+#ifdef HUBASE_DEBUG
 #include <stdio.h>
-//#endif
+#endif
 
 /**
  * HuBase will use B*-Tree to organize data in a file.
@@ -221,7 +221,7 @@ int bTreeInit(int order, int(*comp)(key* keyA, key* keyB), bTree** ppBTree)
     return HUBASE_OK;
 }
 
-//#ifdef HUBASE_DEBUG
+#ifdef HUBASE_DEBUG
 /** 
  * Use methods below to test the list in the btree 
  * (and test the correctness of doubly list)
@@ -255,22 +255,13 @@ void testListRemove(bTree* pTree,int num)
 
 void displayList(bTree* testTree)
 {
-    printf("check1");
     nodeCell* temp;
-    int i;
-    if(testTree)
-        printf("root check!");
-    if(testTree->root->cells->pHeader)
-        printf("Header check!");
-    if(testTree->root->cells->pHeader->pNext)
-        printf("check next");
-    if(testTree->root->cells->pTrailer)
-        printf("check trailer\n");
-    for(temp=testTree->root->cells->pHeader;temp!=testTree->root->cells->pTrailer;temp = temp->pNext)
+    int i=0;
+    for(temp=testTree->root->cells->pHeader->pNext;temp!=testTree->root->cells->pTrailer;temp=temp->pNext)
     {
         i++;
-    //    printf("key is: %d\n",*((int*)temp->pKey->buff));
+        printf("key %d is: %d\n",i,*((int*)temp->pKey->buff));
     }
     printf("%d\n",i);
 }
-//#endif
+#endif
